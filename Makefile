@@ -1,27 +1,26 @@
 CP = g++
 CC = gcc
-TARGET = process judge
-TARGET2 = run
-SRCS = process.cpp judeg.cpp
-SRCS2 = main.c
-OBJS = $(SRCS:.cpp=.o)
-OBJS2 = $(SRCS2:.c=.o)
+TARGET = process judge run
+OBJS = process.o judge.o
 
 DLIBS = -lopencv_core -lopencv_imgproc -lopencv_highgui
 
-all: $(TARGET)$(TARGET2)
+all: $(TARGET) 
 
-$(TARGET): %: %.o
+process: process.o
 	$(CP) -o $@ $^ $(DLIBS)  
 
-$(OBJS): %.o: %.cpp
+process.o: process.cpp
 	$(CP) -o $@ -c $<
 
-$(TARGET2): %: %.o
-	$(CC) -o $@ $^   
+judge: judge.o
+	$(CP) -o $@ $^ $(DLIBS)  
 
-$(OBJS2): %.o: %.c
-	$(CC) -o $@ -c $<
+judge.o: judge.cpp
+	$(CP) -o $@ -c $<
+
+run: main.c
+	$(CC) -o $@ $^
 
 clean:
-	rm -rf $(TARGET) $(OBJS) $(TARGET2) $(OBJS2)
+	rm -rf $(TARGET) $(OBJS)

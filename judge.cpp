@@ -92,11 +92,11 @@ using namespace cv;
 } while(0)
 
 /* timing profiling function */  
-#define TIMING(log_str)do { \
-    gettimeofday(&end, NULL); \
-    timeuse = 1000000*(end.tv_sec-start.tv_sec)+end.tv_usec-start.tv_usec; \
-    printf(log_str, pair, timeuse/1000000.0); \
-} while(0)
+//#define TIMING(log_str)do { \
+//    gettimeofday(&end, NULL); \
+//    timeuse = 1000000*(end.tv_sec-start.tv_sec)+end.tv_usec-start.tv_usec; \
+//    printf(log_str, pair, timeuse/1000000.0); \
+//} while(0)
 
 #define MAP_SIZE (32*1024UL)
 #define MAP_MASK (MAP_SIZE - 1)
@@ -219,7 +219,7 @@ int main(int argc, char* argv[]){
     
     // Init time
     int pair = 0;
-    TIMING("    ##Finish%d [Init] time: %f\n");
+    //TIMING("    ##Finish%d [Init] time: %f\n");
     */
 
     // calculating pairs---------------------------------------------------
@@ -233,7 +233,7 @@ int main(int argc, char* argv[]){
 
     // finish ---------------------------------------------------------------
     //output_results.close();
-    TIMING("======Finish%d [TOTAL] time: %f ============\n "); 
+    //TIMING("======Finish%d [TOTAL] time: %f ============\n "); 
 
     return 0;
 }
@@ -516,7 +516,7 @@ void preprocessing()
         input_bin_1.close();
         input_bin_2.close();
 
-        TIMING("--#%d#--[Process] finish time: %f\n"); 
+        //TIMING("--#%d#--[Process] finish time: %f\n"); 
     }
 }
 
@@ -543,7 +543,7 @@ void dpu_calculate()
         test_dma_to_device(DMA_H2C_DEVICE,DATA1_DDR_ADDR,0x24c00,0,1,input_bin_name_1.c_str());
         printf("                Write input_2 into ddr.\n");
         test_dma_to_device(DMA_H2C_DEVICE,DATA2_DDR_ADDR,0x24c00,0,1,input_bin_name_2.c_str());
-        TIMING("        --#%d#--[Write] finish time: %f\n"); 
+        //TIMING("        --#%d#--[Write] finish time: %f\n"); 
 
         // write config to run dpu  ------------------------------------------
         printf("                Write config into GPIO \n");
@@ -591,7 +591,7 @@ void dpu_calculate()
         printf("                dpu 2 finished \n");
         reg_write(DMA_REG_DEVICE,0x0000,0x0);       // return to ideal
         reg_write(DMA_REG_DEVICE,0x1000,0x0);       // return to ideal
-        TIMING("        --#%d#--[DPU] finish time: %f\n"); 
+        //TIMING("        --#%d#--[DPU] finish time: %f\n"); 
 
         // read results from DPU ------------------------------------------------
         printf("                Read results from ddr\n");
@@ -603,7 +603,7 @@ void dpu_calculate()
         ss >> out_bin_name_2;
         test_dma_from_device(DMA_C2H_DEVICE,DATA1_DDR_ADDR+4608,4096,0,1, out_bin_name_1.c_str());
         test_dma_from_device(DMA_C2H_DEVICE,DATA2_DDR_ADDR+4608,4096,0,1, out_bin_name_2.c_str());
-        TIMING("        --#%d#--[Read] finish time: %f\n"); 
+        //TIMING("        --#%d#--[Read] finish time: %f\n"); 
 
     }
 }
@@ -639,6 +639,6 @@ void result_output()
     if (cos > THRESHOLD){
         result = "same"; 
     }
-    printf("##Final result: %s.\n", result);
+    printf("##Final result: %s.\n", result.c_str());
 
 }

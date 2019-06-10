@@ -92,11 +92,11 @@ using namespace cv;
 } while(0)
 
 /* timing profiling function */  
-#define TIMING(log_str)do { \
-    gettimeofday(&end, NULL); \
-    timeuse = 1000000*(end.tv_sec-start.tv_sec)+end.tv_usec-start.tv_usec; \
-    printf(log_str, pair, timeuse/1000000.0); \
-} while(0)
+//#define TIMING(log_str)do { \
+//    gettimeofday(&end, NULL); \
+//    timeuse = 1000000*(end.tv_sec-start.tv_sec)+end.tv_usec-start.tv_usec; \
+//    printf(log_str, pair, timeuse/1000000.0); \
+//} while(0)
 
 #define MAP_SIZE (32*1024UL)
 #define MAP_MASK (MAP_SIZE - 1)
@@ -233,7 +233,7 @@ int main(int argc, char* argv[]){
 
     // finish ---------------------------------------------------------------
     //output_results.close();
-    TIMING("======Finish%d [TOTAL] time: %f ============\n "); 
+    //TIMING("======Finish%d [TOTAL] time: %f ============\n "); 
 
     //return 0;
 }
@@ -523,7 +523,7 @@ void dpu_calculate()
         test_dma_to_device(DMA_H2C_DEVICE,DATA1_DDR_ADDR,0x24c00,0,1,input_bin_name_1.c_str());
         printf("                Write input_2 into ddr.\n");
         test_dma_to_device(DMA_H2C_DEVICE,DATA2_DDR_ADDR,0x24c00,0,1,input_bin_name_2.c_str());
-        TIMING("        --#%d#--[Write] finish time: %f\n"); 
+        //TIMING("        --#%d#--[Write] finish time: %f\n"); 
 
         // write config to run dpu  ------------------------------------------
         printf("                Write config into GPIO \n");
@@ -571,7 +571,7 @@ void dpu_calculate()
         printf("                dpu 2 finished \n");
         reg_write(DMA_REG_DEVICE,0x0000,0x0);       // return to ideal
         reg_write(DMA_REG_DEVICE,0x1000,0x0);       // return to ideal
-        TIMING("        --#%d#--[DPU] finish time: %f\n"); 
+        //TIMING("        --#%d#--[DPU] finish time: %f\n"); 
 
         // read results from DPU ------------------------------------------------
         printf("                Read results from ddr\n");
@@ -583,7 +583,7 @@ void dpu_calculate()
         ss >> out_bin_name_2;
         test_dma_from_device(DMA_C2H_DEVICE,DATA1_DDR_ADDR+4608,4096,0,1, out_bin_name_1.c_str());
         test_dma_from_device(DMA_C2H_DEVICE,DATA2_DDR_ADDR+4608,4096,0,1, out_bin_name_2.c_str());
-        TIMING("        --#%d#--[Read] finish time: %f\n"); 
+        //TIMING("        --#%d#--[Read] finish time: %f\n"); 
 
     }
 }
@@ -641,7 +641,7 @@ void result_output()
         fifo_img_2.pop();
         output_results << img_name_1_t <<"  "<< img_name_2_t << "  " << result << endl;
 
-        TIMING("                --#%d#--[Result] finish time: %f\n");
+        //TIMING("                --#%d#--[Result] finish time: %f\n");
 
         // save result in image and show -----------------------------------------
         if (save_flag) {
@@ -649,7 +649,7 @@ void result_output()
             save_img(img_1_t._mat,img_2_t._mat, result, 
                         "output/"+img_name_1_t+img_name_2_t+".jpg", show_flag);
 
-            TIMING("                --#%d#--[Image] finish time %f\n"); 
+            //TIMING("                --#%d#--[Image] finish time %f\n"); 
         }
 
     }
